@@ -2,12 +2,12 @@
   <div class="birthday">
     <div class="form-container" v-show="showForm">
       <h1>Mars Birthday Surprise!</h1>
-      <p>Happy Birthday from Curiosity on Mars! Enter your Birth Month and Birth Day and see how Curiosity celebrated your birthday in 2015!</p>
+      <p>Happy Birthday from Curiosity, a Rover on Mars! Enter your Birth Month and Birth Day and see how Curiosity celebrated your birthday in 2015!</p>
       <form v-on:submit.prevent="findWords">
         <p>
-          Enter your birth month (number)
-          <input type="number" v-model="month" /> and birth day (number)
-          <input type="number" v-model="day" />
+          Enter your birth month
+          <input type="number" id="month" min="1" max="12" v-model="month" /> and birth day
+          <input type="number" id="day" min="1" max="31" v-model="day" />
           <button type="submit">Submit</button>
         </p>
       </form>
@@ -42,17 +42,21 @@ export default {
   },
   methods: {
     findWords: function() {
+      let birthday="2019-" + this.month.padStart(2, '0') + "-" + this.day.padStart(2, '0');
+      console.log (birthday)
       axios
         .get(
-          " https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=2015-6-3&api_key=DEMO_KEY",
+          "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos",
           {
             params: {
-              earth_date: this.month
+              earth_date: birthday,
+              api_key:"7xZ66BpWSazfGipnUVukc2faSCCuI5C4Y0225tzj"
             }
           }
         )
         .then(response => {
           this.results = response.data;
+          console.log (this.results);
         })
         .catch(error => {
           this.errors.push(error);
