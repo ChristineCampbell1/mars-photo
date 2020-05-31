@@ -2,7 +2,7 @@
   <div class="birthday">
     <div class="form-container" v-show="showForm">
       <h1>Mars Birthday Surprise!</h1>
-      <p>Happy Birthday from Curiosity, a Rover on Mars! Enter your Birth Month and Birth Day and see how Curiosity celebrated your birthday in 2015!</p>
+      <p>Happy Birthday from Curiosity, a Rover on Mars! Enter your Birth Month and Birth Day and see how Curiosity celebrated your birthday!</p>
       <form v-on:submit.prevent="findWords">
         <p>
           Enter your birth month
@@ -11,12 +11,16 @@
           <button type="submit">Submit</button>
         </p>
       </form>
-      <ul v-if="results && results.length > 0" class="results">
-        <li v-for="item of results" :key="item">
+      <ul v-if="results && results.photos.length > 0" class="results">
+        <li v-for="item in results.photos" :key="item">
           <p>
-            <strong>{{item.word}}</strong>
+            <strong>{{item.img_src}}</strong>
           </p>
-          <p>{{item.score}}</p>
+          <img
+          v-bind:src="'https://image.tmdb.org/t/p/w150_and_h225_bestv2'+ result.poster_path"
+          v-bind:alt="result.title + 'Poster'"
+          class="poster-image"
+        />
         </li>
       </ul>
 
@@ -37,7 +41,9 @@ export default {
       month: "",
       day: "",
       showForm: true,
-      showError: false
+      showError: false,
+      results: null,
+      errors: null
     };
   },
   methods: {
@@ -56,7 +62,7 @@ export default {
         )
         .then(response => {
           this.results = response.data;
-          console.log (this.results);
+          console.log (this.results.photos[0]);
         })
         .catch(error => {
           this.errors.push(error);
