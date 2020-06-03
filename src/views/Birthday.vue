@@ -12,18 +12,22 @@
         </p>
       </form>
       <ul v-if="results && results.photos.length > 0" class="results">
-        <li v-for="item in results.photos" :key="item">
-          <p>
-            <strong>{{item.img_src}}</strong>
-          </p>
+        <li>
+          
           <img
-          v-bind:src="'https://image.tmdb.org/t/p/w150_and_h225_bestv2'+ result.poster_path"
-          v-bind:alt="result.title + 'Poster'"
+          v-bind:src="results.photos[0].img_src"
+          v-bind:alt="'mars'"
           class="poster-image"
         />
+        <p>
+            <strong>{{results.photos[0].img_src}}</strong>
+          </p>
         </li>
       </ul>
-
+<p v-if="results && results.photos.length == 0" class="results">
+  <br>
+  Sorry, Curioisity took the day off today. Happy Birthday anyway!
+</p>
       <ul v-if="errors && errors.length > 0" class="errors">
         <li v-for="error of errors" :key="error">{{error.message}}</li>
       </ul>
