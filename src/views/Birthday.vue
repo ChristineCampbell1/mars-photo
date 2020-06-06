@@ -11,6 +11,7 @@
           <button type="submit">Submit</button>
         </p>
       </form>
+      <spinner v-if="showSpinner"></spinner>
       <ul v-if="results && results.photos.length > 0" class="results">
         <li>
           
@@ -37,9 +38,13 @@
 
 <script>
 import axios from "axios";
+import Cubespinner from '@/views/Cubespinner';
 
 export default {
   name: "Birthday",
+  components: {
+    spinner: Cubespinner
+  },
   data() {
     return {
       month: "",
