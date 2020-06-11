@@ -3,7 +3,9 @@
     <div class="form-container" v-show="showForm">
       <h1>Mars Birthday Surprise!</h1>
       <p>Happy Birthday from Curiosity, a Rover on Mars! Enter your Birth Month and Birth Day and see how Curiosity celebrated your birthday!</p>
-      <form v-on:submit.prevent="findWords">
+
+      <!--Form for entering birthday data -->
+      <form v-on:submit.prevent="findPhoto">
         <p>
           Enter your birth month
           <input type="number" id="month" min="1" max="12" v-model="month" /> and birth day
@@ -11,10 +13,13 @@
           <button type="submit">Submit</button>
         </p>
       </form>
-      <spinner v-if="showSpinner"></spinner>
+
+      <!--Loading spinner -->
+      <spinner v-if = "showSpinner"></spinner>
       <ul v-if="results && results.photos.length > 0" class="results">
         <li>
-          
+
+       <!--Mars photo images -->   
           <img
           v-bind:src="results.photos[0].img_src"
           v-bind:alt="'mars'"
@@ -25,6 +30,8 @@
           </p>
         </li>
       </ul>
+
+      <!--Error message -->
 <p v-if="results && results.photos.length == 0" class="results">
   <br>
   Sorry, Curioisity took the day off today. Happy Birthday anyway!
@@ -52,11 +59,13 @@ export default {
       showForm: true,
       showError: false,
       results: null,
-      errors: null
+      errors: null,
+      showSpinner: false
     };
   },
   methods: {
-    findWords: function() {
+    findPhoto: function() {
+      this.showSpinner = true
       let birthday="2019-" + this.month.padStart(2, '0') + "-" + this.day.padStart(2, '0');
       console.log (birthday)
       axios
@@ -70,6 +79,7 @@ export default {
           }
         )
         .then(response => {
+          this.showSpinner = false;
           this.results = response.data;
           console.log (this.results.photos[0]);
         })
